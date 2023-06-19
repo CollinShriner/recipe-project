@@ -79,23 +79,12 @@ public class DataLoader implements CommandLineRunner {
         guacNotes.setRecipe(perfectGuac);
         perfectGuac.setNotes(guacNotes);
 
-        Recipe savedGuacRecipe = recipeRepository.save(perfectGuac);
 
-        lime.setRecipe(savedGuacRecipe);
-        avocado.setRecipe(savedGuacRecipe);
 
-        Ingredient saveLime = ingredientRepository.save(lime);
-        Ingredient saveAvocado = ingredientRepository.save(avocado);
 
-        tableSpoon.setIngredient(saveLime);
-        item.setIngredient(saveAvocado);
-
-        unitOfMeasureRepository.save(tableSpoon);
-        unitOfMeasureRepository.save(item);
-
-        perfectGuac.getIngredients().add(saveLime);
-        perfectGuac.getIngredients().add(saveAvocado);
-        recipeRepository.save(savedGuacRecipe);
+        perfectGuac.addIngredient(lime);
+        perfectGuac.addIngredient(avocado);
+        recipeRepository.save(perfectGuac);
 
         Recipe chickenTaco = new Recipe();
         Notes tacoNotes = new Notes();
@@ -135,8 +124,6 @@ public class DataLoader implements CommandLineRunner {
         chickenTaco.getCategories().add(categoryRepository.findByDescription("Mexican").get());
         chickenTaco.setServings(6);
 
-        Recipe savedChickenTaco = recipeRepository.save(chickenTaco);
-
         UnitOfMeasure pound =unitOfMeasureRepository.findByDescription("Pound").get();
         UnitOfMeasure teaspoon = unitOfMeasureRepository.findByDescription("Teaspoon").get();
 
@@ -145,28 +132,19 @@ public class DataLoader implements CommandLineRunner {
         chicken.setDescription("Chicken");
         chicken.setUom(pound);
         chicken.setAmount(new BigDecimal(6));
-        chicken.setRecipe(savedChickenTaco);
 
         Ingredient orangeJuice = new Ingredient();
         orangeJuice.setDescription("Orange Juice");
         orangeJuice.setUom(teaspoon);
         orangeJuice.setAmount(new BigDecimal(3));
-        orangeJuice.setRecipe(savedChickenTaco);
-
-        Ingredient savedChicken = ingredientRepository.save(chicken);
-        Ingredient savedOrange = ingredientRepository.save(orangeJuice);
-
-        teaspoon.setIngredient(savedOrange);
-        pound.setIngredient(savedChicken);
-
-        unitOfMeasureRepository.save(teaspoon);
-        unitOfMeasureRepository.save(pound);
-
-        savedChickenTaco.getIngredients().add(savedOrange);
-        savedChickenTaco.getIngredients().add(savedChicken);
-        recipeRepository.save(savedChickenTaco);
 
 
+
+        chickenTaco.addIngredient(orangeJuice);
+        chickenTaco.addIngredient(chicken);
+
+
+        recipeRepository.save(chickenTaco);
 
     }
 }
